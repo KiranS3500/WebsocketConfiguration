@@ -1,0 +1,39 @@
+server:
+  port: '${PORT:8005}'
+
+app.websocket.allowed-origins[0]: "*"
+
+management:
+  endpoints:
+    web:
+      exposure.include: "*"
+
+spring:
+  application:
+    name: device-connector-service
+  devtools.restart.enabled: false
+  profiles:
+    active: 'dev,stage,prod,default'
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      uri: '${CONFIG_SERVER_URL:http://localhost:8888}'
+
+eureka:
+  client:
+    service-url:
+      defaultZone: '${EUREKA_SERVER_URL:http://localhost:9000/eureka}'
+  instance:
+    hostname: ${HOTNAME:localhost}
+    prefer-ip-address: true
+  healthcheck:
+    enabled: true
+  lease:
+      duration: 5
+
+
+logging:
+  level:
+    com.netflix.eureka: OFF
+    com.netflix.discovery: OFF
